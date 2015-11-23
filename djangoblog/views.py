@@ -7,9 +7,9 @@ from django.shortcuts import redirect
 from django.http import Http404
 from django.http import HttpResponseForbidden
 
-from kiki import forms
-from kiki import models
-from kiki.serializers import ArticleSerializer
+from djangoblog import forms
+from djangoblog import models
+from djangoblog.serializers import ArticleSerializer
 
 
 @login_required

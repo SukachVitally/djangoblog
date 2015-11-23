@@ -1,5 +1,5 @@
 from django.contrib import admin
-from kiki import models
+from djangoblog import models
 
 
 admin.site.register(models.Article)

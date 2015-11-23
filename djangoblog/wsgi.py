@@ -1,5 +1,5 @@
 """
-WSGI config for kiki project.
+WSGI config for djangoblog project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             name='ArticleTags',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('article', models.ForeignKey(to='kiki.Article')),
+                ('article', models.ForeignKey(to='djangoblog.Article')),
             ],
         ),
         migrations.CreateModel(
@@ -39,6 +39,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='articletags',
             name='tag',
-            field=models.ForeignKey(to='kiki.Tag'),
+            field=models.ForeignKey(to='djangoblog.Tag'),
         ),
     ]

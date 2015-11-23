@@ -1,5 +1,5 @@
 from django import forms
-from kiki import models
+from djangoblog import models
 
 
 class RegistrationForm(forms.Form):
