@@ -1,2 +1,2 @@
 # djangoblog
-djangoblog
+
