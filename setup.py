@@ -1,4 +1,4 @@
-"""Kiki setup script."""
+"""Djangoblog setup script."""
 
 from setuptools import setup
 from setuptools import find_packages
@@ -9,7 +9,7 @@ with open('requirements.txt') as requirements_file:
 
 
 setup(
-    name='kiki',
+    name='djangoblog',
     version='0.1.0',
     packages=find_packages(),
     include_package_data=True,

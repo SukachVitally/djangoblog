@@ -1,1 +1,2 @@
-default['home_dir'] = '/home/test/'
+default['home_dir'] = '/opt/djangoblog/'
+default['dev_owner'] = 'vagrant'

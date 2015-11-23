@@ -3,3 +3,5 @@
 *.pyc
 vendor/*
 db.sqlite3
+*.lock
+.vagrant

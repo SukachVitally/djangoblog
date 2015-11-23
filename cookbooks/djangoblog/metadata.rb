@@ -1,4 +1,4 @@
-name 'kiki_cook'
+name 'djangoblog'
 version '0.1.0'
 
 depends 'build-essential'
