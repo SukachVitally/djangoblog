@@ -1,5 +1,6 @@
 home_dir = node[:home_dir]
 dev_owner = node[:dev_owner]
+venv_dir = node[:venv_dir]
 
 directory "#{home_dir}" do
     owner dev_owner
@@ -9,7 +10,7 @@ end
 
 execute 'venv init' do
   user dev_owner
-  command "virtualenv #{home_dir}venvs/djangoblog"
+  command "virtualenv #{venv_dir}"
   action :run
 end
 Chef::Log.warn("Virtualenv directory created")
@@ -19,7 +20,7 @@ template "/home/vagrant/start.sh" do
     mode '0755'
     owner dev_owner
     variables(
-        :home_dir => home_dir
+        :venv_dir => venv_dir
     )
 end
 
