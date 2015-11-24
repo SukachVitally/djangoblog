@@ -1,3 +1,5 @@
+import bleach
+
 from django.db import models
 from django.db.models import Count
 
@@ -51,6 +53,12 @@ class Article(models.Model):
         articles = list(Article.objects.filter(pk__in=article_ids))
         articles.sort(key=lambda t: article_ids.index(t.pk))
         return articles
+
+    @staticmethod
+    def get_category_id(name):
+        for item in Article.CATEGORIES:
+            if item[1] == name:
+                return item[0]
 
 
 class Tag(models.Model):

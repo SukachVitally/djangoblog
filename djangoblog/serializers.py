@@ -1,3 +1,5 @@
+import bleach
+
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from djangoblog.exceptions import UserAlreadyExist
@@ -11,16 +13,58 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tag
-        fields = ('id', 'name')
+        fields = ('name',)
 
 
 class ArticleSerializer(serializers.ModelSerializer):
 
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
+    category = serializers.CharField(max_length=50)
 
     class Meta:
         model = models.Article
-        fields = ('id', 'name', 'text', 'tags')
+        fields = ('id', 'name', 'text', 'tags', 'category')
+
+    def create(self, validated_data):
+        tags = validated_data.pop('tags') if 'tags' in validated_data else []
+        category = validated_data.pop('category')
+        validated_data['text'] = bleach.clean(validated_data.get('text'))
+        article = models.Article.objects.create(category_id=models.Article.get_category_id(category), **validated_data)
+        article.save()
+        for tag in tags:
+            name = tag.get('name')
+            try:
+                tag = models.Tag.objects.get(name=name)
+            except models.Tag.DoesNotExist:
+                tag = models.Tag(name=name)
+                tag.save()
+
+            if not models.ArticleTags.objects.filter(article_id=article.id, tag_id=tag.id).count():
+                    article_tag = models.ArticleTags(article_id=article.id, tag_id=tag.id)
+                    article_tag.save()
+
+        return article
+
+    def update(self, instance, validated_data):
+        tags = validated_data.pop('tags') if 'tags' in validated_data else []
+        instance.name = validated_data.get('name', instance.name)
+        instance.text = bleach.clean(validated_data.get('text', instance.text))
+        instance.save()
+        models.ArticleTags.objects.filter(article_id=instance.id).delete()
+
+        for tag in tags:
+            name = tag.get('name')
+            try:
+                tag = models.Tag.objects.get(name=name)
+            except models.Tag.DoesNotExist:
+                tag = models.Tag(name=name)
+                tag.save()
+
+            if not models.ArticleTags.objects.filter(article_id=instance.id, tag_id=tag.id).count():
+                article_tag = models.ArticleTags(article_id=instance.id, tag_id=tag.id)
+                article_tag.save()
+
+        return instance
 
 
 class AuthSerializer(serializers.Serializer):
