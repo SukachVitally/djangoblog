@@ -10,5 +10,5 @@ Vagrant.configure(2) do |config|
     chef.add_recipe "djangoblog"
     chef.add_recipe "djangoblog::blog_develop"
   end
-  config.vm.network "forwarded_port", guest: 5000, host: 8080
+  config.vm.network "forwarded_port", guest: 8000, host: 8080
 end

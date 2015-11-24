@@ -1,7 +1,7 @@
 .idea
 *.egg-info
 *.pyc
-venv/*
+venv
 db.sqlite3
 *.lock
 .vagrant

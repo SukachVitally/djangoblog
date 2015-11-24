@@ -1,4 +1,5 @@
 import bleach
+from djangoblog.exceptions import UserAlreadyExist
 from rest_framework import generics
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -9,32 +10,18 @@ from django.http import HttpResponseForbidden
 
 from djangoblog import forms
 from djangoblog import models
-from djangoblog.serializers import ArticleSerializer
+from djangoblog import serializers
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from django.utils.six import BytesIO
+from rest_framework.parsers import JSONParser
+from rest_framework import exceptions
 
 
-@login_required
-def index(request):
-    return render(request, 'index.html')
-
-
-def registration(request):
-    if request.method == 'POST':
-        form = forms.RegistrationForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            if not User.objects.filter(username=username).exists():
-                User.objects.create_user(
-                    username,
-                    first_name=form.cleaned_data['first_name'],
-                    last_name=form.cleaned_data['last_name'],
-                    email=form.cleaned_data['email'],
-                    password=form.cleaned_data['password']
-                )
-                return redirect('/login')
-            form.add_error('username', 'User already exist')
-    else:
-        form = forms.RegistrationForm()
-    return render(request, 'registration/registration.html', {'form': form})
 
 
 @login_required
@@ -141,9 +128,49 @@ def create_tag(request, article_id):
 
 class ArticlesApiView(generics.ListAPIView):
     queryset = models.Article.objects.all().filter(is_approved=True)
-    serializer_class = ArticleSerializer
+    serializer_class = serializers.ArticleSerializer
 
 
 class ArticleApiView(generics.RetrieveAPIView):
     queryset = models.Article.objects.all()
-    serializer_class = ArticleSerializer
+    serializer_class = serializers.ArticleSerializer
+
+
+class AuthView(APIView):
+
+    permission_classes = ()
+
+    def post(self, request, format=None):
+        stream = BytesIO(request.body)
+        data = JSONParser().parse(stream)
+        serializer = serializers.AuthSerializer(data=data)
+        if not serializer.is_valid():
+            raise exceptions.ParseError
+        try:
+            token = serializer.save()
+        except User.DoesNotExist:
+            raise exceptions.AuthenticationFailed('No such user')
+
+        return Response({
+            'token': token
+        })
+
+
+class RegisterView(APIView):
+
+    permission_classes = ()
+
+    def post(self, request, format=None):
+        stream = BytesIO(request.body)
+        data = JSONParser().parse(stream)
+        serializer = serializers.RegisterSerializer(data=data)
+        if not serializer.is_valid():
+            raise exceptions.ParseError
+        try:
+            token = serializer.save()
+        except UserAlreadyExist:
+            raise exceptions.PermissionDenied('User already exist')
+
+        return Response({
+            'token': token
+        })
