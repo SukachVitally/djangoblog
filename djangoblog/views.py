@@ -21,6 +21,8 @@ class ArticleApiView(generics.RetrieveAPIView):
 
 class AuthView(APIView):
 
+    permission_classes = ()
+
     def post(self, request):
         serializer = serializers.AuthSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -35,6 +37,8 @@ class AuthView(APIView):
 
 
 class RegisterView(APIView):
+
+    permission_classes = ()
 
     def post(self, request):
         serializer = serializers.RegisterSerializer(data=request.data)
@@ -101,8 +105,8 @@ class ArticlesListView(APIView):
         return Response(serializer.data)
 
 
-class SimilarArticlesListView(APIView):
-    permission_classes = (IsAuthenticated,)
+class SimilarArticlesApiView(APIView):
+    permission_classes = ()
 
     def get_object(self, pk):
         try:

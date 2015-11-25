@@ -48,7 +48,7 @@ class Article(models.Model):
 
         # remove own id from list
         article_ids.remove(self.id)
-        articles = list(Article.objects.filter(pk__in=article_ids))
+        articles = list(Article.objects.filter(pk__in=article_ids, is_approved=True))
         articles.sort(key=lambda t: article_ids.index(t.pk))
         return articles
 
