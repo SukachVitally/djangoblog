@@ -24,3 +24,11 @@ template "/home/vagrant/start.sh" do
     )
 end
 
+template "/etc/nginx/nginx.conf" do
+    source 'nginx.conf.erb'
+    mode '0644'
+end
+
+service "nginx" do
+  action :start
+end
