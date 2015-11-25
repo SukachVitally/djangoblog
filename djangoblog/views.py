@@ -93,9 +93,27 @@ class ArticleView(APIView):
 
 
 class ArticlesListView(APIView):
-
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        serializer = serializers.ArticleSerializer(snippet)
+        articles = models.Article.objects.filter(author_id=request.user.id)
+        serializer = serializers.ArticleSerializer(articles, many=True)
+        return Response(serializer.data)
+
+
+class SimilarArticlesListView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            article = models.Article.objects.get(pk=pk)
+        except models.Article.DoesNotExist:
+            raise exceptions.NotFound
+
+        return article
+
+    def get(self, request, pk):
+        article = self.get_object(pk)
+        article.similar_articles()
+        serializer = serializers.ArticleSerializer(article.similar_articles(), many=True)
         return Response(serializer.data)
