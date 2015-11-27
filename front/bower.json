@@ -1,0 +1,27 @@
+{
+  "name": "djangoblog",
+  "description": "Test front application for django blog",
+  "main": "gulpfile.js",
+  "authors": [
+    "me"
+  ],
+  "license": "BSD",
+  "keywords": [
+    "test"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "backbone.marionette": "marionette#~2.4.4",
+    "spin.js": "~2.3.2",
+    "backbone.syphon": "marionette.backbone.syphon#~0.6.3",
+    "backbone.picky": "~0.2.0",
+    "backbone.localStorage": "Backbone.localStorage#~1.1.16",
+    "bootstrap": "~3.3.6"
+  }
+}
