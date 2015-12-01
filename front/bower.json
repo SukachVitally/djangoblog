@@ -23,6 +23,8 @@
     "backbone.picky": "~0.2.0",
     "backbone.localStorage": "Backbone.localStorage#~1.1.16",
     "bootstrap": "~3.3.6",
-    "requirejs": "~2.1.22"
+    "requirejs": "~2.1.22",
+    "require-jade": "~0.0.3",
+    "spin": "~1.1.6"
   }
 }

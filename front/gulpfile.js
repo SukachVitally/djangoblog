@@ -21,8 +21,8 @@ var PATH = {
         dest: basePaths.dest + 'css/'
     },
     templates: {
-        src: basePaths.src + 'scripts/templates/',
-        dest: basePaths.dest + 'js/templates/'
+        src: basePaths.src + 'scripts/',
+        dest: basePaths.dest + 'js/'
     },
     scripts: {
         src: basePaths.src + 'scripts/',
@@ -37,7 +37,7 @@ var appFiles = {
     html: PATH.html.src + '*.html',
     styles: PATH.styles.src + '*.css',
     coffee: PATH.scripts.src + '**/*.coffee',
-    templates: PATH.templates.src + '*.jade',
+    templates: PATH.templates.src + '**/*.jade'
 };
 
 gulp.task('coffee', function() {
@@ -47,12 +47,10 @@ gulp.task('coffee', function() {
 });
 
 gulp.task('templates', function() {
-  console.log(appFiles.templates);
-  console.log(PATH.templates.dest);
   gulp.src(appFiles.templates)
-    .pipe(jade({
-      client: true
-    }))
+    //.pipe(jade({
+    //  client: true
+    //}))
     .pipe(gulp.dest(PATH.templates.dest))
 });
 

@@ -17,7 +17,7 @@ define ["marionette"], (Marionette)->
   ShopManager.on "start", ->
 
     if Backbone.history
-      require ['apps/products/products_app'], ->
+      require ['apps/products/products_app'], =>
         Backbone.history.start()
         if @getCurrentRoute() is ""
           ShopManager.trigger "products:list"

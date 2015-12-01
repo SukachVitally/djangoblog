@@ -6,20 +6,23 @@ requirejs.config
     underscore: "../vendor/underscore/underscore",
     marionette: "../vendor/backbone.marionette/lib/backbone.marionette",
     marionette: "../vendor/backbone.marionette/lib/backbone.marionette",
-    app: "app"
+    jade: "../vendor/require-jade/jade",
+    spin: "../vendor/spin.js/spin",
+    "spin.jquery": "../vendor/spin.js/jquery.spin",
   },
   shim: {
     underscore: {
       exports: "_"
     },
     backbone: {
-      deps: ["jquery", "underscore"],
+      deps: ["jquery", "underscore", "jade", "spin.jquery"],
       exports: "Backbone"
     },
     marionette: {
       deps: ["backbone"],
       exports: "Marionette"
-    }
+    },
+    "spin.jquery": ["spin", "jquery"]
   }
 
 require ["app"], (ShopManager)->

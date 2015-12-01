@@ -1,4 +1,4 @@
-define ["app"], (ShopManager)->
+define ["app", "common/views"], (ShopManager)->
   ShopManager.module "ProductsApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
     List.Controller =
       listProducts: (criterion)->

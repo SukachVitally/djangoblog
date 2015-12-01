@@ -1,6 +1,5 @@
 Marionette.TemplateCache.prototype.loadTemplate = (templateId)->
-  console.log "template: '#{templateId}'"
-  return template
+  return templateId
 
 Marionette.TemplateCache.prototype.compileTemplate = (rawTemplate)->
   rawTemplate
