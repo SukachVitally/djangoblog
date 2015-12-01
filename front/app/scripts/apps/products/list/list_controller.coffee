@@ -1,52 +1,56 @@
-ShopManager.module "ProductsApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
-  List.Controller =
-    listProducts: (criterion)->
-      loadingView = new ShopManager.Common.Views.Loading()
-      ShopManager.mainRegion.show loadingView
+define ["app"], (ShopManager)->
+  ShopManager.module "ProductsApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
+    List.Controller =
+      listProducts: (criterion)->
 
-      fetchingProducts = ShopManager.request "product:entities"
+        loadingView = new ShopManager.Common.Views.Loading()
+        ShopManager.mainRegion.show loadingView
 
-      $.when(fetchingProducts).done (products)->
-        filteredProducts = ShopManager.Entities.FilteredCollection
-          collection: products
-          filterFunction: (filterCriterion)->
-            criterion = filterCriterion.toLowerCase()
-            (product)->
-              if product.get('name').toLowerCase().indexOf(criterion) isnt -1
-                return product
+        fetchingProducts = ShopManager.request "product:entities"
 
-        if criterion
-          filteredProducts.filter criterion
+        $.when(fetchingProducts).done (products)->
+          filteredProducts = ShopManager.Entities.FilteredCollection
+            collection: products
+            filterFunction: (filterCriterion)->
+              criterion = filterCriterion.toLowerCase()
+              (product)->
+                if product.get('name').toLowerCase().indexOf(criterion) isnt -1
+                  return product
 
-        productsListView = new List.Products
-          collection: filteredProducts
+          if criterion
+            filteredProducts.filter criterion
 
-        productsListView.on "childview:product:show", (childView, args)->
-          ShopManager.trigger "product:show", args.model.get("id")
+          productsListView = new List.Products
+            collection: filteredProducts
 
-        ShopManager.execute "clear:active:group"
-        ShopManager.mainRegion.show productsListView
+          productsListView.on "childview:product:show", (childView, args)->
+            ShopManager.trigger "product:show", args.model.get("id")
 
-    listGroupProducts: (id)->
-      loadingView = new ShopManager.Common.Views.Loading()
-      ShopManager.mainRegion.show loadingView
+          ShopManager.execute "clear:active:group"
+          ShopManager.mainRegion.show productsListView
 
-      fetchingProducts = ShopManager.request "product:entities"
-      $.when(fetchingProducts).done (products)->
-        filteredProducts = ShopManager.Entities.FilteredCollection
-          collection: products
-          filterFunction: (id)->
-            (product)->
-              if product.inGroup(id)
-                return product
+      listGroupProducts: (id)->
+        loadingView = new ShopManager.Common.Views.Loading()
+        ShopManager.mainRegion.show loadingView
 
-        filteredProducts.filter id.toString()
+        fetchingProducts = ShopManager.request "product:entities"
+        $.when(fetchingProducts).done (products)->
+          filteredProducts = ShopManager.Entities.FilteredCollection
+            collection: products
+            filterFunction: (id)->
+              (product)->
+                if product.inGroup(id)
+                  return product
 
-        productsListView = new List.Products
-          collection: filteredProducts
+          filteredProducts.filter id.toString()
 
-        productsListView.on "childview:product:show", (childView, args)->
-          ShopManager.trigger "product:show", args.model.get "id"
+          productsListView = new List.Products
+            collection: filteredProducts
 
-        ShopManager.execute "set:active:group", id
-        ShopManager.mainRegion.show productsListView
+          productsListView.on "childview:product:show", (childView, args)->
+            ShopManager.trigger "product:show", args.model.get "id"
+
+          ShopManager.execute "set:active:group", id
+          ShopManager.mainRegion.show productsListView
+
+  return ShopManager.ProductsApp.List.Controller
