@@ -1,23 +1,30 @@
 define ["marionette"], (Marionette)->
 
-  ShopManager = new Marionette.Application()
+  BlogManager = new Marionette.Application()
 
-  ShopManager.addRegions
+  BlogManager.addRegions
     mainRegion: "#main-region"
-    sidebarRegion: "#sidebar-region"
+    dialogRegion: "#dialog-region"
     headerRegion: "#header-region"
 
-  ShopManager.navigate = (route, options)->
+  BlogManager.navigate = (route, options)->
     options = options || {}
     Backbone.history.navigate route, options
 
-  ShopManager.getCurrentRoute = ->
+  BlogManager.getCurrentRoute = ->
     Backbone.history.fragment
 
-  ShopManager.on "start", ->
-
+  BlogManager.on "start", ->
     if Backbone.history
-      require ['apps/products/products_app'], =>
+      require ['apps/header/header_app'], =>
         Backbone.history.start()
-        if @getCurrentRoute() is ""
-          ShopManager.trigger "products:list"
+
+#      require ['apps/products/products_app'], =>
+#        Backbone.history.start()
+#        if @getCurrentRoute() is ""
+#          ShopManager.trigger "products:list"
+
+  BlogManager.getUrl = (url)->
+    "#{location.protocol}//#{location.hostname}:8080/#{url}"
+
+  return BlogManager

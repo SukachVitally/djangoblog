@@ -1,22 +1,18 @@
-ShopManager.module "HeaderApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
+define [
+  "app",
+  "jade!apps/header/list/templates/headerLayout",
+  "jade!apps/header/list/templates/headerLink"
+], (BlogManager, headerLayoutTpl, headerLinkTpl)->
+  BlogManager.module "HeaderApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
 
-  class List.Link extends Marionette.ItemView
-    template: "headerLink"
-    tagName: "li"
+    class List.Link extends Marionette.ItemView
+      template: headerLinkTpl
+      tagName: "li"
 
-  class List.Links extends Marionette.CompositeView
-    className: "container-fluid"
-    template: "headerLayout"
-    childView: List.Link
-    childViewContainer: "ul"
-    events:
-      "submit #header-filter-form": "filterProducts"
-    ui:
-      criterion: "input.js-filter-criterion"
+    class List.Links extends Marionette.CompositeView
+      className: "container-fluid"
+      template: headerLayoutTpl
+      childView: List.Link
+      childViewContainer: "ul"
 
-    filterProducts: (e)->
-      e.preventDefault()
-      @trigger 'products:filter', @$('.js-filter-criterion').val()
-
-    onSetFilterCriterion: (criterion)->
-      @ui.criterion.val criterion
+  return BlogManager.HeaderApp.List.Links

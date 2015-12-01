@@ -9,6 +9,8 @@ requirejs.config
     jade: "../vendor/require-jade/jade",
     spin: "../vendor/spin.js/spin",
     "spin.jquery": "../vendor/spin.js/jquery.spin",
+    "backbone.picky": "../vendor/backbone.picky/lib/backbone.picky",
+    "backbone.syphon": "../vendor/backbone.syphon/lib/backbone.syphon",
   },
   shim: {
     underscore: {
@@ -22,8 +24,10 @@ requirejs.config
       deps: ["backbone"],
       exports: "Marionette"
     },
-    "spin.jquery": ["spin", "jquery"]
+    "spin.jquery": ["spin", "jquery"],
+    "backbone.picky": ["backbone"],
+    "backbone.syphon": ["backbone"]
   }
 
-require ["app"], (ShopManager)->
-  ShopManager.start()
+require ["app"], (BlogManager)->
+  BlogManager.start()

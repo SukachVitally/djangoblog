@@ -1,14 +1,18 @@
-ShopManager.module "HeaderApp.List", (List, ShopManager, Backbone, Marionette, $, _)->
-  List.Controller =
-    listHeader: ->
-      links = ShopManager.request "header:entities"
+define ["app"], (BlogManager)->
+  BlogManager.module "HeaderApp.List", (List, BlogManager, Backbone, Marionette, $, _)->
+    List.Controller =
+      listHeader: ->
+        require ['apps/header/list/list_view', "entities/header"], (ListLinks) ->
+          links = BlogManager.request "header:entities"
 
-      HeaderLinks = new List.Links collection: links
+          HeaderLinks = new ListLinks collection: links
 
-      HeaderLinks.on "products:filter", (filterCriterion)->
-        ShopManager.trigger "products:filter", filterCriterion
+          HeaderLinks.on "products:filter", (filterCriterion)->
+            BlogManager.trigger "products:filter", filterCriterion
 
-      ShopManager.commands.setHandler "set:filter:criterion", (criterion)->
-        HeaderLinks.triggerMethod "set:filter:criterion", criterion
+          BlogManager.commands.setHandler "set:filter:criterion", (criterion)->
+            HeaderLinks.triggerMethod "set:filter:criterion", criterion
 
-      ShopManager.headerRegion.show HeaderLinks
+          BlogManager.headerRegion.show HeaderLinks
+
+  return BlogManager.HeaderApp.List.Controller

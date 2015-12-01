@@ -1,8 +1,10 @@
-ShopManager.module "HeaderApp", (Header, ShopManager, Backbone, Marionette, $, _)->
-  API =
-    listHeader: ->
-      Header.List.Controller.listHeader()
+define ["app"], (BlogManager)->
+  BlogManager.module "HeaderApp", (Header, BlogManager, Backbone, Marionette, $, _)->
+    API =
+      listHeader: ->
+        require ["apps/header/list/list_controller"], (ListController)->
+          ListController.listHeader()
 
-  Header.on "start", ->
-    API.listHeader()
+    Header.on "start", ->
+      API.listHeader()
 
