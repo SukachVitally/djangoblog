@@ -1,6 +1,4 @@
 define ["app", "jade!common/templates/loading", "spin.jquery"], (ShopManager, loadingTpl)->
-#  console.log template
-  console.log loadingTpl
   ShopManager.module "Common.Views", (Views, ShopManager, Backbone, Marionette, $, _)->
     class Views.Loading extends Marionette.ItemView
       template: loadingTpl

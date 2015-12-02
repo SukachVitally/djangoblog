@@ -11,8 +11,8 @@ define ["app", "backbone.picky"], (BlogManager)->
 
     initializeHeaders = ->
       Entities.headers = new Entities.HeaderCollection [
-        {name: "Registaration", url: "registration",  navigationTrigger: "contacts:list"}
-        {name: "Login", url: "authenticate",  navigationTrigger: "about:show"}
+        {name: "Registration", url: "registration",  navigationTrigger: "blogs:registration"}
+        {name: "Login", url: "authenticate",  navigationTrigger: "blogs:login"}
       ]
 
     API =

@@ -16,13 +16,10 @@ define ["marionette"], (Marionette)->
 
   BlogManager.on "start", ->
     if Backbone.history
-      require ['apps/header/header_app'], =>
+      require ['apps/header/header_app', 'apps/blogs/blogs_app'], =>
         Backbone.history.start()
-
-#      require ['apps/products/products_app'], =>
-#        Backbone.history.start()
-#        if @getCurrentRoute() is ""
-#          ShopManager.trigger "products:list"
+        if @getCurrentRoute() is ""
+          BlogManager.trigger "blogs:registration"
 
   BlogManager.getUrl = (url)->
     "#{location.protocol}//#{location.hostname}:8080/#{url}"
